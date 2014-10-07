@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Task  do
-  before { @task = Task.new(title: "Walk the dog", completed: true, priority: 0, location: "") }
+  before { @task = Task.new(title: "Walk the dog") }
 
   subject { @task }
 
