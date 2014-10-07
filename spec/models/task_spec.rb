@@ -30,7 +30,7 @@ describe Task  do
     end
 
     describe "completed" do
-        it "false by default" do
+      it "false by default" do
         new_task = Task.new(title: "Walk the dog")
         expect(new_task.completed).to be_falsey
       end
@@ -41,11 +41,28 @@ describe Task  do
         new_task = Task.new(title: "Walk the dog")
         expect(new_task.priority).to eq(0)
       end
+
+      describe "range" do
+        context "too high" do
+        before { @task.priority = 4 }
+        it { should_not be_valid }
+      end
+
+        context "too low" do
+        before { @task.priority = -1 }
+        it { should_not be_valid }
+      end
     end
+  end
 
     describe "location" do
       it "blank by default" do
-        expect(@task.location).to eq("")
+        expect(@task.location).to eq(" ")
+      end
+
+      describe "too long" do
+        before { @task.location = "a" * 255 }
+        it { should_not be_valid }
       end
     end
   end
