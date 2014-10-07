@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe Task  do
-  before { @task = Task.new(title: "Walk the dog", completed: true, priority: 0) }
+  before { @task = Task.new(title: "Walk the dog", completed: true, priority: 0, location: "") }
 
   subject { @task }
 
   it { should respond_to(:title) }
   it { should respond_to(:completed) }
   it { should respond_to(:priority) }
+  it { should respond_to(:location) }
   it { should be_valid }
 
   describe "validations" do
@@ -39,6 +40,12 @@ describe Task  do
       it "blank by default" do
         new_task = Task.new(title: "Walk the dog")
         expect(new_task.priority).to eq(0)
+      end
+    end
+
+    describe "location" do
+      it "blank by default" do
+        expect(@task.location).to eq("")
       end
     end
   end
