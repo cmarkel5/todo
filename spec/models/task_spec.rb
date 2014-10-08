@@ -65,6 +65,13 @@ describe Task  do
         it { should_not be_valid }
       end
     end
+    
+    # describe "due_at" do
+    #   it "has default of day created"
+    #     new_task = Task.create(title: "Anything goes here")
+    #     expect(new_task.due_at).to eq(Date.today)
+    #   end
+    # end
   end
 end
 
