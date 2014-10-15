@@ -44,16 +44,16 @@ describe Task  do
 
       describe "range" do
         context "too high" do
-        before { @task.priority = 4 }
-        it { should_not be_valid }
-      end
+          before { @task.priority = 4 }
+          it { should_not be_valid }
+        end
 
         context "too low" do
-        before { @task.priority = -1 }
-        it { should_not be_valid }
+          before { @task.priority = -1 }
+          it { should_not be_valid }
+        end
       end
     end
-  end
 
     describe "location" do
       it "blank by default" do
@@ -66,12 +66,18 @@ describe Task  do
       end
     end
     
-    # describe "due_at" do
-    #   it "has default of day created"
-    #     new_task = Task.create(title: "Anything goes here")
-    #     expect(new_task.due_at).to eq(Date.today)
-    #   end
-    # end
+    describe "due_at" do # Will fail until we cover hooks
+      it "has default of current day" do
+        new_task = Task.create(title: "Anything goes here")
+        expect(new_task.due_at).to eq(Date.today)
+      end
+
+      it "uses selected date if selected" do
+        selected_date = 2.weeks.from_now.to_date
+        new_task = Task.create(title: "Future task", due_at: selected_date)
+        expect(new_task.due_at).to eq(selected_date)
+      end
+    end
   end
 end
 

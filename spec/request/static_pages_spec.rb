@@ -12,8 +12,8 @@ describe "static_pages"  do
 
   describe "about" do
     before { visit about_path }
-    it { should have_selector('h1', "About Me") }
-    it { should have_title("Todo | About Me") }    
+    it { should have_selector('h1', "About") }
+    it { should have_title("Todo | About") }    
   end
 
   describe "help" do

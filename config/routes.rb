@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   get '/about',     to: 'static_pages#about'
   get '/help',      to: 'static_pages#help'
 
-  get '/tasks/:id',  to: 'tasks#show', as: :show_task
+  #limiting which ones are available for learning purposes
+  resources :tasks, only: [:show, :new, :create]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

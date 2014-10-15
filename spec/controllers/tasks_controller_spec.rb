@@ -1,65 +1,61 @@
-# 1. Create a GET tasks#show page when the user visits /tasks/:id (aka visits /tasks/3)
-
 require 'spec_helper'
 
 describe TasksController, type: :controller do
-  describe "GET new" do
-    it "renders :new"
-    it "assigns @task to a new Task"
-  end
+  describe "GET :show" do
+    let(:task) { Task.create(title: "Walk the dog") }
 
-  describe "POST create /tasks" do
-    context "with valid attributes" do
-      it "creates Task in database"
-      it "redirects to :show"
-    end
-
-    context "with invalid attributes" do
-      it "does not create Task in database"
-      it "re-renders :new"
-    end
-  end
-  
-  describe "GET show /tasks/:id" do
-    before { @task = Task.create(title: "Walk the dog") }
-
-    it "renders show page" do
-      get :show, id: @task.id
+    it "renders :show" do
+      get :show, id: task.id
       expect(response).to render_template(:show)
     end
 
     it "assigns requested task to @task" do
-      get :show, id: @task.id
-      #Expect @task to be set to the task we're looking for
-      assigns(:task).should eq(@task)
-    end
-    # @task = Task.find(params[:id])
-    # When we go to /tasks/3
-    # Right side of equal sign --> Task.find(3) --> { id: 3, title: "Walk the dog", created_at: }
-  end
-
-  describe "GET index /tasks" do
-    it "renders :index"
-    it "assigns all the tasks to @tasks"
-  end
-
-  describe "GET edit /tasks/:id/edit" do
-    it "renders :edit"
-    it "assigns requested task to @task"
-  end
-
-  describe "PUT update /tasks/:id" do
-    context "with valid attributes" do
-      it "updates @task in database"
-      it "redirects to :show"
-    end
-
-    context "with invalid attributes" do
-      it "re-renders :edit"
-      it "does not update @task in database"
+      get :show, id: task.id
+      # Assigns @task to eq task that we defined on line 5
+      assigns(:task).should eq(task)
     end
   end
 
-# put in destroy
+  # $ bundle exec rspec spec/controllers/tasks_controller_spec.rb:20
+  describe "GET :new" do
+    it "renders :new" do
+      get :new
+      expect(response).to render_template(:new)
+    end
 
+    it "assigns new Task to @task" do
+      get :new
+      assigns(:task).should be_a_new(Task) # confirm that @task = Task.new
+    end
+  end
+
+  describe "POST create" do
+    context "valid attributes" do
+      it "creates task" do
+        # When I post to the create action, change Task.count by 1, aka add 1 to the tasks db
+        expect{
+          post :create, task: { title: "Walk the dog" }
+        }.to change(Task, :count).by(1)
+      end
+
+      it "redirects to :show" do
+        post :create, task: { title: "Walk the dog" }
+        last_task = Task.last
+        expect(response).to redirect_to(task_path(last_task.id))
+      end
+    end
+
+    context "invalid attributes" do
+      it "does not create task" do
+        expect{
+          post :create, task: { title: "" }
+        }.to_not change(Task, :count)
+      end
+
+      it "re-renders :new" do
+        post :create, task: { title: "" }
+        expect(response).to render_template(:new)
+      end
+    end
+  end
 end
